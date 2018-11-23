@@ -12,6 +12,9 @@ client.on('ready', function() {
 	console.log('Bot ready');
 });
 
+// Match to test if a string is a hex color with six digits
+var regex = /#?([0-9a-fA-F]{6})/;
+
 client.on('message', function(message) {
 	if (!message.guild)
 		return;
@@ -24,9 +27,6 @@ client.on('message', function(message) {
 			usage(message);
 			return;
 		}
-
-		// Match to test if a string is a hex color with six digits
-		var regex = /#?([0-9a-fA-F]{6})/;
 
 		// Just get the expected color code
 		color = color[1];
@@ -71,6 +71,15 @@ client.on('message', function(message) {
 				member.addRole(toAdd);
 			}
 		}
+	}
+
+	if (message.content.startsWith('.pruneColors')) {
+		message.guild.roles.array().forEach(function(role) {
+			if (regex.test(role.name) && role.members.array().length == 0) {
+				console.log('Pruning role '+role.name);
+				role.delete('Nobody uses this color anymore');
+			}
+		});
 	}
 });
 
