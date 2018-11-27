@@ -15,6 +15,10 @@ client.on('ready', function() {
 // Match to test if a string is a hex color with six digits
 var regex = /#?([0-9a-fA-F]{6})/;
 
+client.on('error', function(err) {
+	console.log(err);
+});
+
 client.on('message', function(message) {
 	if (!message.guild)
 		return;
